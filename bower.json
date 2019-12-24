@@ -1,0 +1,22 @@
+{
+  "name": "security_in_ci_cd_pipeline",
+  "version": "0.1.0",
+  "main": [
+    "js/reveal.js",
+    "css/reveal.css"
+  ],
+  "homepage": "http://www.stefreitag.de/wp",
+  "license": "Apache-2.0",
+  "description": "Security in CI/ CD Pipeline",
+  "authors": [
+    "Stefan Freitag <stefan.freitag@udo.edu>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stefanfreitag/securityInCiCdPipeline.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ]
+}
