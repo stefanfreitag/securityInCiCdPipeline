@@ -1,85 +1,94 @@
-<!-- markdownlint-disable MD012 MD014 -->
+<!-- markdownlint-disable MD012 MD014 MD033-->
 
 # Security in CI / CD Pipelines
 
+Vulnerability Scanning
 
 
-## Continuous Improvments on team level 2019
+## Workstreams on team level 2019
 
 * Continuous Integration/ Deployment
+* Infrastructure
 * Monitoring
 * Operations
-* Infrastructure
+* Testing
 * UI Consolidation
 
 
 ## Continuous Integration/ Deployment
 
-Automation
+  * _Verify_ and _Package_ steps in TeamCity
+  * Deployment via TeamCity/ Chef  or Chef only
+  * Static code analysis using Sonarqube
 
-* _Verify_ and _Package_ steps in TeamCity
-* Deployment via TeamCity job or Chef
-* Sonarqube
+>  Automation is key
 
-TODO: Add Confluence link or screenshot
 
 
 ## AWS Paas Project
 
-* Elastic Container Registry (ECR)
-* _Scan on Push_ feature
-
-<img src="images/aws_ecr_repositories.png" alt="Scre" height="450px"/>
-
-
-Scanned images with high level information
-
-<img src="images/aws_ecr_repositories_coretto_8.png" alt="" height="550px"/>
+* Elastic Container Registry with _Scan on Push_
+* Clair used for vulnerability scanning
+<img src="images/aws_ecr_repositories.png" alt="Scre"/>
 
 
-Detailed information of a scan
+Detailed scan information
 
 <img src="images/aws_ecr_repositories_coretto_8_scan_result.png" alt="" height="600px"/>
 
 
-## Scanning for vulnerabilties
+## What to check
 
-* Docker container images
+* Container images
 * Operating system
   * Installed software packages
-* Application
+* **Application level**
+  * Code
   * Used libraries and frameworks
+* ...
 
 
 
-## Scanning for Java based projects
+## Scanning in Java based projects
 
-> The Open Web Application Security Project (OWASP) is a worldwide not-for-profit charitable organization focused on improving the security of software.
-
-* Flagship project: OWASP Dependency-Check
+* OWASP Dependency-Check
 * Supports Java and .NET
-* Experimental analyzers for Python, Ruby, PHP (composer), and Node.js applications
-  * rates of possible false positive and false negative
+* Experimental analyzers for Python, Ruby, PHP, and Node.js
+
+> Open Web Application Security Project is a worldwide not-for-profit charitable organization focused on improving the security of software.
 
 
 ## How it works
 
-* Data used is from the National Vulnerability Database (NVD) hosted by NIST: https://nvd.nist.gov
+* CVE data comes from the National Vulnerability Database (NVD) 
+* Hosted by National Institute of Standards and Technology  (NIST)
+
+```xml
+  <entry id="CVE-2012-5055">
+  ...
+    <vuln:vulnerable-software-list>
+      <vuln:product>cpe:/a:vmware:springsource_spring_security:3.1.2</vuln:product>
+      <vuln:product>cpe:/a:vmware:springsource_spring_security:2.0.4</vuln:product>
+      <vuln:product>cpe:/a:vmware:springsource_spring_security:3.0.1</vuln:product>
+    </vuln:vulnerable-software-list>
+  </entry>
+```
+ 
+ * A JarAnalyzer will collect information from the manifest, pom.xml, and the package names within the JAR files scanned
 
 
 ### Invocation
 
 * Command Line
-* Ant Task
+* ~~Ant Task~~
 * Maven Plugin
 * Gradle Plugin
 
+### Plugins
 
-Other Plugins
-
-* Jenkins Plugin
-* sbt Plugin
-* SonarQube Plugin
+* Jenkins
+* sbt
+* SonarQube
 
 
 ### Gradle Plugin
@@ -108,29 +117,39 @@ plugins {
 
 Scan information
 
-<img src="images/gradle_tasks.png" alt="" height="350px"/>
+<img src="images/gradle_scan_information.png" alt="" height="550px"/>
 
 
-Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
+Configuration options
 
-~~~json
+* Build fails if a CVSS score equal to or above a specified level is identified.
+
+```json
 dependencyCheck {
     failBuildOnCVSS=6
 }
-~~~
+```
 
 <img src="images/gradle_scan_failed_job.png" alt="" height="350px"/>
 
 
-TODO: Add Dependency Check report
+* analyzedTypes<br /> Artifact types that will be analyzed (jar, war, ear, zip)
+* skipTestGroups<br />All dependency groups that being with ‘test’ will be skipped
+
+
+
+## Outlook
+ 
+ * Take actions based on report outcome
+ * Understand what risk level is acceptable:<br />Not all CVEs have a fix
+ * Automate update of NVD data
+
 
 
 ## Further information
 
 * [OWASP](https://www.owasp.org/index.php/Main_Page)
 * [OWASP Dependency Check](https://jeremylong.github.io/DependencyCheck/)
-* [Clair](https://coreos.com/clair/docs/latest/)
-* [CVSS](https://www.first.org/cvss/specification-document)
-* [npm audit](https://docs.npmjs.com/cli/audit)
+* [NVD Homepage](https://nvd.nist.gov)
 * [Wikipedia on CVE](https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures)
 * [Wikipedia on CVE Scoring System](https://en.wikipedia.org/wiki/Common_Vulnerability_Scoring_System)
