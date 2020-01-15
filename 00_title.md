@@ -5,6 +5,12 @@
 Vulnerability Scanning
 
 
+* Motivation
+* What we did
+* Outlook
+
+
+
 ## Workstreams on team level 2019
 
 * Continuous Integration/ Deployment
@@ -22,7 +28,6 @@ Vulnerability Scanning
   * Static code analysis using Sonarqube
 
 >  Automation is key
-
 
 
 ## AWS Paas Project
@@ -45,7 +50,6 @@ Detailed scan information
 * **Application level**
   * Code
   * Used libraries and frameworks
-* ...
 
 
 
@@ -81,13 +85,11 @@ Detailed scan information
 
 * Command Line
 * ~~Ant Task~~
-* Maven Plugin
-* Gradle Plugin
 
 ### Plugins
 
+* Maven/ Gradle/ sbt
 * Jenkins
-* sbt
 * SonarQube
 
 
@@ -95,10 +97,10 @@ Detailed scan information
 
 ```json
 plugins {
-    id "fr.brouillard.oss.gradle.jgitver" version "0.10.0-rc01"
-    id "io.franzbecker.gradle-lombok" version "3.2.0"
     id "java"
-    id "idea"
+    id "fr.brouillard.oss.gradle.jgitver" version "0.10.0-rc01"
+    ...
+    id "io.franzbecker.gradle-lombok" version "3.2.0"
     id "org.owasp.dependencycheck" version "5.2.4"
 }
 ```
